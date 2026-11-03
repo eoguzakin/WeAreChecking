@@ -7,7 +7,7 @@ from .data import fetch_weekend, latest_snapshot, get_weekend
 
 
 def main():
-    parser = argparse.ArgumentParser(description="WeAreChecking veri ve ortam araçları")
+    parser = argparse.ArgumentParser(description="WeAreChecking data and environment tools")
     sub = parser.add_subparsers(dest="command", required=True)
     sub.add_parser("doctor")
     for command in ("fetch", "inspect", "schedule"):
@@ -24,7 +24,7 @@ def main():
         print(f"Interpreter: {sys.executable}")
         for name in ("wearechecking", "fastf1", "pandas", "pyarrow", "ipykernel"):
             print(f"{name}: {version(name)}")
-        print("Ortam hazır. Bu kontrol internet erişimi veya model başarısı testi değildir.")
+        print("Environment ready. This check does not test internet access or model performance.")
     elif args.command == "schedule":
         event, schedule = get_weekend(args.year, args.round_number, root)
         print(event["EventName"], "/", event["EventFormat"])

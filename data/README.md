@@ -1,9 +1,9 @@
-# Veri
+# Data
 
-Gerçek veri `snapshots/` altında sürümlenir ve Git'e eklenmez.
+Real data is versioned under `snapshots/` and excluded from Git.
 
-- OpenF1: katılımcı, tur, stint, ölçülen hava; kaynak JSON ve normalize Parquet.
-- Jolpica: Q/Sprint/R sınıflandırması ve kalıcı sürücü kimliği.
-- FastF1: hafta sonu takvimi; F1TV zamanlama API'si kullanılmaz.
+- OpenF1: participants, laps, stints, and observed weather, saved as source JSON and normalized Parquet.
+- Jolpica: qualifying/sprint/race classifications and permanent driver IDs.
+- FastF1: the weekend calendar; the F1TV timing API is not used.
 
-Her snapshot kaynak URL'leri, UTC kayıt zamanları, veri kapsamı ve SHA-256 özetlerini içerir. Eski snapshot değişmez; yeni fetch ayrı klasör üretir. Hata alan indirme `failed` kalır. HTTP/takvim önbelleği proje kökündeki `.cache/` altındadır. Önbellekten gelen veri de tarihsel yeniden kurma olarak etiketlenir; yayın anı kanıtı değildir.
+Each snapshot records source URLs, UTC observation times, coverage, and SHA-256 hashes. A new fetch creates a new folder; existing snapshots remain unchanged. Interrupted downloads retain a `failed` status. HTTP and calendar caches live in `.cache/` at the project root. Cached data is also labelled as a historical reconstruction, not evidence of publication-time availability.

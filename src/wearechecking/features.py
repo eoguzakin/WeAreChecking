@@ -15,31 +15,31 @@ class ForecastInputs:
 def qualifying_inputs(snapshot: Snapshot, cutoff, *, mode):
     if mode != "reconstructed":
         raise DataContractError(
-            "Bu kaynak tarihsel indirme. mode='reconstructed' açıkça belirtilmeli. "
-            "Canlı point-in-time tahmin henüz desteklenmiyor."
+            "This is a retrospective download. Specify mode='reconstructed' explicitly. "
+            "Live point-in-time forecasting is not supported yet."
         )
     cutoff = utc_timestamp(cutoff)
     info = snapshot.manifest["sessions"].get("Q")
     if info is None:
-        raise DataContractError("Önce Q seansını indir.")
+        raise DataContractError("Download the qualifying session first.")
     if cutoff <= utc_timestamp(info["event_end_bound_utc"]):
-        raise DataContractError("Kesim zamanı Q tamamlandıktan sonra olmalı.")
+        raise DataContractError("The cutoff must be after qualifying has finished.")
     schedule = snapshot.schedule()
     race = schedule.loc[schedule.session_code == "R"]
     if len(race) != 1 or cutoff >= utc_timestamp(race.iloc[0].start_utc):
-        raise DataContractError("Kesim zamanı yarış başlangıcından önce olmalı.")
+        raise DataContractError("The cutoff must be before the race starts.")
     # Explicit allowlist. Never access R/results, points, status or race grid here.
     source = snapshot.table("Q", "results")
-    require_columns(source, ["DriverId", "Abbreviation", "TeamName", "Position"], "Q sonuçları")
+    require_columns(source, ["DriverId", "Abbreviation", "TeamName", "Position"], "Qualifying results")
     frame = source[["DriverId", "Abbreviation", "TeamName", "Position"]].rename(
         columns={"DriverId": "driver_id", "Abbreviation": "driver",
                  "TeamName": "team", "Position": "qualifying_position"}
     ).copy()
     if frame.driver_id.isna().any() or frame.driver_id.eq("").any() or frame.driver_id.duplicated().any():
-        raise DataContractError("Kalıcı sürücü kimliği eksik/tekrarlı; numarayla doldurma.")
+        raise DataContractError("A permanent driver identity is missing or duplicated; do not replace it with a driver number.")
     rank = pd.to_numeric(frame.qualifying_position, errors="coerce")
     if sorted(rank.tolist()) != list(range(1, len(frame) + 1)):
-        raise DataContractError("Q sınıflandırması eksik/tekrarlı; bu başlangıç alıştırmasına uygun değil.")
+        raise DataContractError("The qualifying classification is incomplete or duplicated; it is unsuitable for this starter exercise.")
     frame["qualifying_position"] = rank.astype(int)
     return ForecastInputs(frame.reset_index(drop=True), {
         "cutoff_utc": cutoff.isoformat(), "target_session": "R",

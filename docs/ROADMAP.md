@@ -1,27 +1,27 @@
-# Adımlar ve bitiş ölçütleri
+# Milestones and completion criteria
 
-## Şimdi: ilk iki hedef
+## Now: the first two milestones
 
-1. **Gerçek hafta sonu:** seans takvimi, tur/stint/hava/katılımcı tabloları, kaynak ve kalite kontrolleri. Öğrenci görevi: sürücü başına benzersiz tur sayısını çıkarma.
-2. **İlk tahmin:** Q sırasını yarış sırası için benchmark olarak kullanma, tahmini sonuçtan önce dosyaya yazma, MAE ve sıra korelasyonu, decision note.
+1. **A real weekend:** session schedule, laps, stints, weather, participants, provenance, and data-quality checks. Learner task: count each driver's unique laps.
+2. **The first prediction:** use qualifying order as a race-order benchmark, save the prediction before opening the outcome, evaluate MAE and rank correlation, and write a decision note.
 
-Her iki hedefin altyapısı hazırlanır; öğrenme görevleri interaktif yapılır.
+The infrastructure supports both milestones. We will complete the learning tasks interactively.
 
-## Sonraki gelişim
+## Next stages
 
-3. **Çok yarışlı deney:** geçmiş sezonları kronolojik train/validation/test ayırma; son test yarışlarına bakmadan model seçimi. Q benchmark, takım/sürücü geçmişi benchmark, belirsizlik.
-4. **İlk eğitilen model:** yarış/driver satırları, geçmişten rolling özellikler, takım ve pist etkisi. Önce açıklanabilir model; sonra ranking modeli. Hedef seans özellikleri yasak.
-5. **Pist ve tempo:** pist uzunluğu/tip/viraj profili; FP long-run tempo, lastik yaşı, pist gelişimi, trafik ve kırmızı/sarı bayrak temizleme. Yakıt bilinmiyorsa kesin yakıt düzeltmesi iddia etme.
-6. **Seanslara ayrılma:** FP tur zamanı sırası ile yarış sırasını ayrı hedefle; Q, SQ, Sprint, GP için ayrı değerlendirme. Sprint formatını takvimden belirle; seans sayısı/sırasını sabitleme.
-7. **Haber ve entry sistemi:** FIA/ekip duyuruları kaynaklı olay defteri. Yaralanma iddiasından tıbbi çıkarım yapma; yalnız doğrulanmış yarışa katılım etkisi. Ceza/DSQ/DNS/substitution, yayın zamanı, geçerlilik zamanı, kaynak, revizyon. Rookie FP katılımı yarış katılımı değildir.
-8. **Art arda güncelleme:** seans sonunda yeni snapshot → yalnız kalan seans tahminleri → eski tahmini koru → değişimin kaynağını açıkla. Ertelenen/iptal seans ve yeni sürücü için senaryo.
-9. **Gerçek replay:** o anda kaydedilmiş verinin available_at/observed_at zamanları; haberin ilk yayın sürümü ve hava tahmininin issued_at zamanı. Tarihsel düzeltilmiş veriden ayrı rapor.
-10. **Sunum:** kalibre edilmiş sıra dağılımı, podyum/ilk 10/yarışı bitirme olasılığı, veri tazeliği, model kartı ve demo.
+3. **Multiple-race experiments:** split historical seasons chronologically into training, validation, and test sets. Select models before examining the final test races. Compare qualifying and driver/team-history benchmarks, with uncertainty.
+4. **The first trained model:** event/driver rows, rolling historical features, and team/circuit effects. Begin with an interpretable model, then try a ranking model. Exclude information from the future target session.
+5. **Circuit and pace features:** circuit length/type/corner profile, FP long-run pace, tyre age, track evolution, traffic, and yellow/red-flag filtering. Do not claim exact fuel correction when fuel loads are unknown.
+6. **Separate session targets:** distinguish FP lap-time ranking from race classification. Evaluate Q, SQ, Sprint, and GP separately. Read sprint formats from the calendar instead of fixing session counts or order.
+7. **News and entry records:** record sourced FIA/team announcements, publication time, effective time, revisions, and penalties/DSQ/DNS/substitutions. For injury reports, use confirmed participation effects without making medical inferences. A rookie FP appearance does not establish a race entry.
+8. **Sequential updates:** after a session, save a new snapshot, forecast the remaining sessions, preserve earlier predictions, and explain what changed. Handle postponed/cancelled sessions and new-driver scenarios explicitly.
+9. **True replay:** use available_at/observed_at records captured at the time, the original publication version of news, and the issued_at time of weather forecasts. Report this separately from retrospective corrected data.
+10. **Presentation:** calibrated rank distributions, podium/top-10/finish probabilities, data freshness, a model card, and a demo.
 
-## Başarı standardı
+## Evidence of success
 
-Tek yarış tahmini yeterli kanıt değildir. Çok sayıda ilerleyen zaman penceresinde güçlü basit benchmark'ı geçme, hata çubukları, rejim değişimi ve yeni sürücü denemeleri gerekir. DNF/DNS/DSQ ayrı hedef/durum olmalı. Yakalanamayan haber varsa "işlendi" denmez.
+One race is insufficient. Evaluate across multiple forward-moving time windows against strong simple benchmarks, with uncertainty estimates, regulation changes, and new-driver cases. Model DNF/DNS/DSQ as separate outcomes or states. Only claim to handle news that the system actually ingested.
 
-## Mimarinin bugünkü sınırı
+## Current implementation boundary
 
-Mevcut kod yalnız ilk iki hedefin öğrenme altyapısıdır. Haber botu, canlı scheduler, sürekli öğrenme, ücretli veri hesabı veya sunucu kurulmuş değildir.
+The existing code provides the learning infrastructure for the first two milestones. News ingestion, a live scheduler, continual learning, paid data accounts, and a deployed server remain future work.

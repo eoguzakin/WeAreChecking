@@ -1,12 +1,12 @@
-# Decision note — ilk tahmin
+# Decision note — first prediction
 
-Bu dosyayı 02 defterinin sonunda kendi cümlelerinle doldur.
+Complete this file in your own words at the end of notebook 02.
 
-- **Soru:** Hangi yarışın hangi seansını, hangi kesim zamanında tahmin ediyorum?
-- **Girdi:** Tahmine giren kolonlar hangileri? Yarış sonucunu neden kullanmıyorum?
-- **Hipotez:** Q sırası neden işe yarayabilir, hangi durumda bozulur?
-- **Sonuç:** Sıra MAE ve Spearman kaç? En büyük hata hangi sürücüde?
-- **Kısıt:** Bu deney reconstructed mı? Ceza, DNS, substitution ve sonraki düzeltmeler ele alındı mı?
-- **Karar:** Bir sonraki ekleyeceğim tek özellik ne? Bunu nasıl adil test edeceğim?
+- **Question:** Which event and session am I forecasting, and at what cutoff time?
+- **Inputs:** Which columns enter the prediction? Why am I excluding the race result?
+- **Hypothesis:** Why might qualifying order help, and when might it fail?
+- **Result:** What are the position MAE and Spearman correlation? Which driver has the largest error?
+- **Limitations:** Is this a reconstructed experiment? Are penalties, DNS, substitutions, and later corrections handled?
+- **Decision:** What single feature will I add next? How will I test it fairly?
 
-Hazır başarı cümlesi yok: sayıları kendi çalıştırdığın çıktıdan yaz.
+Write the numbers from your own executed output. Do not fill in a success claim before running the experiment.

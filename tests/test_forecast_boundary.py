@@ -29,7 +29,7 @@ def test_live_claim_on_retrospective_source_rejected(snapshot):
 
 def test_unknown_driver_identity_rejected(snapshot):
     snapshot.q.loc[0, "DriverId"] = None
-    with pytest.raises(DataContractError, match="kimli"):
+    with pytest.raises(DataContractError, match="driver identity"):
         qualifying_inputs(snapshot, CUTOFF, mode="reconstructed")
 
 
@@ -49,7 +49,7 @@ def test_save_then_evaluate_and_detect_tampering(snapshot, tmp_path):
     assert len(comparison) == 3
     with (folder / "prediction.csv").open("a") as stream:
         stream.write("\n")
-    with pytest.raises(DataContractError, match="değiştirilmiş"):
+    with pytest.raises(DataContractError, match="modified"):
         evaluate_saved(folder, snapshot)
 
 
@@ -58,5 +58,5 @@ def test_replacement_driver_requires_entry_resolution(snapshot, tmp_path):
     prediction = pd.DataFrame({"driver_id": ["a", "b", "c"], "predicted_position": [2, 1, 3]})
     folder = save_prediction(prediction, inputs, root=tmp_path)
     snapshot.race.loc[0, "DriverId"] = "substitute"
-    with pytest.raises(DataContractError, match="katılımcıları farklı"):
+    with pytest.raises(DataContractError, match="different participants"):
         evaluate_saved(folder, snapshot)

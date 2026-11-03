@@ -10,7 +10,7 @@ def resolve_sessions(client, year, schedule):
     target_day = pd.Timestamp(schedule.loc[schedule.session_code == "R", "start_utc"].iloc[0]).date()
     matching = [row for row in races if pd.Timestamp(row["date_start"]).date() == target_day]
     if len(matching) != 1:
-        raise DataContractError("OpenF1 hafta sonu tekil eşlenemedi. Tarih/pist eşlemesini incele.")
+        raise DataContractError("Could not uniquely match the OpenF1 weekend. Review the date/circuit mapping.")
     sessions, url = client.get("https://api.openf1.org/v1/sessions",
                                {"meeting_key": matching[0]["meeting_key"]})
     return sessions, [(races, races_url, "race_sessions"), (sessions, url, "meeting_sessions")]
@@ -24,10 +24,10 @@ def jolpica_results(client, year, round_number, code):
                                {"format": "json", "limit": 100})
     races = payload["MRData"]["RaceTable"]["Races"]
     if len(races) != 1 or not races[0].get(key):
-        raise DataContractError(f"Jolpica {code} sonuçları eksik.")
+        raise DataContractError(f"Jolpica {code} results are missing.")
     raw = races[0][key]
     if int(payload["MRData"]["total"]) != len(raw):
-        raise DataContractError("Jolpica yanıtı eksik/paginated.")
+        raise DataContractError("The Jolpica response is incomplete or paginated.")
     records = []
     for row in raw:
         driver = row["Driver"]

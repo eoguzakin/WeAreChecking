@@ -1,3 +1,3 @@
-# Çıktılar
+# Outputs
 
-Tahminler kaydedildiğinde yeni klasör, CSV ve metadata JSON üretilir. Değerlendirme bu kaydı okur. Öğrenci alıştırmaları tamamlanmadan tahmin üretilmez. Çalıştırılmış defterler ve HTML önizlemeleri de burada tutulabilir; bu klasörün içerikleri Git'e eklenmez.
+Saving a prediction creates a new folder containing a CSV and JSON metadata. Evaluation reads that saved record. The notebooks wait for the learner exercises to be completed before producing a prediction. Executed notebooks and HTML previews also live here. Generated contents of this folder are excluded from Git.

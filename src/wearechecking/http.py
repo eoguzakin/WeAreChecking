@@ -30,4 +30,4 @@ class PublicClient:
                 if attempt == 2:
                     raise
                 time.sleep(2 ** attempt)
-        raise RuntimeError("Veri kaynağı yanıt vermedi.")
+        raise RuntimeError("The data source did not respond.")

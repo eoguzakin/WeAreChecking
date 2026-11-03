@@ -9,7 +9,7 @@ def project_root(start=None):
         marker = candidate / "pyproject.toml"
         if marker.exists() and 'name = "wearechecking"' in marker.read_text(encoding="utf-8"):
             return candidate
-    raise FileNotFoundError("WeAreChecking klasörünü açıp komutu orada çalıştır.")
+    raise FileNotFoundError("Open the WeAreChecking folder and run the command from there.")
 
 
 def prepare_dirs(root=None):

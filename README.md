@@ -1,25 +1,25 @@
 # WeAreChecking 🏁
 
-Formula 1 hafta sonlarını adım adım tahmin etmeyi öğrenmek için Python projesi.
+A Python project for learning how to forecast Formula 1 weekends, one step at a time.
 
-**Başlangıç:** [BASLA.md](BASLA.md) → [01 · Hafta sonu verisi](notebooks/01_weekend_data.ipynb) → [02 · İlk tahmin](notebooks/02_first_prediction.ipynb).
+**Start here:** [START_HERE.md](START_HERE.md) → [01 · Weekend data](notebooks/01_weekend_data.ipynb) → [02 · First prediction](notebooks/02_first_prediction.ipynb).
 
-## Şu anki kapsam
+## Current scope
 
-- İzole Python ortamı, veri indirme komutu, önbellek ve sürümlü snapshot.
-- OpenF1: seans katılımcıları, turlar, lastik stintleri, gözlenen hava.
-- Jolpica: Q / Sprint / yarış sınıflandırması ve kalıcı sürücü kimlikleri.
-- FastF1: yalnız takvim; zamanlama indirmesi kullanılmıyor.
-- Model girdisi / gerçek sonuç ayrımı, UTC kesim zamanı, tahmin kaydı ve değerlendirme.
-- İki açıklamalı defter, iki öğrenci alıştırması ve çevrimdışı altyapı testleri.
+- An isolated Python environment, data download command, cache, and versioned snapshots.
+- OpenF1: session participants, laps, tyre stints, and observed weather.
+- Jolpica: qualifying, sprint, and race classifications, plus permanent driver IDs.
+- FastF1: the calendar only; its timing download API is not used.
+- Separate model inputs and actual results, a UTC forecast cutoff, prediction records, and evaluation.
+- Two guided notebooks, two learner exercises, and offline infrastructure tests.
 
-**Henüz tamamlanmadı:** öğrenci alıştırmaları, eğitilmiş ML modeli, tüm seanslar için tahmin, pist performans özellikleri, haber/sakatlık/ceza/yer değiştirme işleme, canlı güncelleme ve arayüz. Bunlar [yol haritasında](docs/ROADMAP.md).
+**Still to build:** the learner exercises, a trained ML model, predictions for every session, circuit performance features, news/injury/penalty/substitution handling, live updates, and a user interface. See the [roadmap](docs/ROADMAP.md).
 
-İlk benchmark, Q sırasından yarış sırası üretir. Hızlı öğrenmek ve sonraki modelleri karşılaştırmak için başlangıçtır; projenin son hedefi değildir.
+The first benchmark uses qualifying order to predict race order. It gives us a starting point for learning and comparing future models.
 
-## Kurulum ve kontrol
+## Setup and checks
 
-Python 3.12–3.14; bu makinede 3.13 kullanılır. PowerShell, proje kökü:
+Python 3.12–3.14 is supported; this machine uses 3.13. Run these commands in PowerShell from the project root:
 
 ```powershell
 py -3.13 bootstrap.py
@@ -27,31 +27,33 @@ py -3.13 bootstrap.py
 .\.venv\Scripts\python.exe -m pytest
 ```
 
-VS Code'da **bu klasörü** aç. Notebook kernelini **WeAreChecking (.venv)** veya bu klasördeki `.venv\Scripts\python.exe` seç. Ortam aktivasyonu gerekmez.
+Open **this folder** in VS Code. Select **WeAreChecking (.venv)** or this folder's `.venv\Scripts\python.exe` as the notebook kernel. Environment activation is optional.
 
 ```powershell
 .\.venv\Scripts\python.exe -m wearechecking fetch --year 2024 --round 1
 .\.venv\Scripts\python.exe -m wearechecking inspect --year 2024 --round 1
 ```
 
-Varsayılan örnek: 2024 Bahreyn. Komut takvimdeki bütün seansları indirir. İlk indirme internet ister; notebook mevcut snapshot'ı okur. Yeniden indirme ayrı snapshot oluşturur. Ayrıntılı telemetri indirilmez.
+The default example is the 2024 Bahrain Grand Prix. The fetch command downloads every session on the weekend schedule. The first download requires internet access; the notebooks read the saved snapshot. Each new download creates a separate snapshot. Detailed car telemetry is outside this initial download.
 
-## Öğrenme düzeni
+## How we will learn
 
-Birlikte önce **tahmin et → küçük kod yaz → kontrolü çalıştır → sonucu açıkla** döngüsünü kullanacağız. `src/wearechecking/student.py` senin çalışma alanın. Fonksiyonlar başlangıçta `None` döndürür; defter bunu **BEKLİYOR** diye gösterir. Bu bir kurulum hatası değildir. Altyapı testlerinin geçmesi alıştırmaların tamamlandığı anlamına gelmez.
+We will use **predict what will happen → write a small piece of code → run a check → explain the result**. Your workspace is `src/wearechecking/student.py`. The functions initially return `None`, which the notebooks display as **PENDING**. This means an exercise is waiting for us to complete it. Passing the infrastructure tests does not complete the exercises.
 
-## Dürüst değerlendirme
+We will use English for explanations, documentation, code comments, and feedback.
 
-Geçmiş veriler bugün indirilir. Sonradan yapılan sınıflandırma düzeltmeleri bulunabilir. Bu nedenle ilk çalışma açıkça **reconstructed** olarak etiketlidir. Gerçek bir tarihsel point-in-time backtest değildir.
+## Honest evaluation
 
-Q katılımcıları ilk alıştırmada geçici yarış katılımcıları kabul edilir. Grid cezası, DNS veya sürücü değişimi henüz modellenmez; değerlendirmede katılımcı uyuşmazlığı varsa işlem durur. Tek yarışın hatası genel başarı kanıtı değildir. DNF olan sınıflandırılmış sürücünün resmi sırası korunur; DNS/DSQ için geliştirilecek ayrı durum modeli ertelenmiştir.
+Historical data is downloaded today and may contain later classification corrections. The first experiment is therefore explicitly labelled **reconstructed**. It does not establish what information was available at a historical forecast time.
 
-## Kaynaklar
+For the first exercise, qualifying participants are treated as provisional race entries. Grid penalties, DNS, and driver substitutions are not modelled yet. Evaluation stops if the participant lists differ. One race's error is not evidence of general performance. Official positions are preserved for classified drivers who did not finish; separate DNS/DSQ handling remains future work.
 
-Erişim koşulları 3 Kasım 2026'da kontrol edildi:
+## Sources
 
-- [OpenF1 docs](https://openf1.org/docs/) — 2023 sonrası tarihsel veri, ücretsiz ve kimlik doğrulamasız.
-- [Jolpica docs](https://github.com/jolpica/jolpica-f1/blob/main/docs/README.md) — sonuçlar, sürücü ve pist kayıtları.
-- [FastF1 authentication](https://github.com/theOehrly/Fast-F1/blob/main/docs/api_reference/accounts_auth.rst) — zamanlama erişimi artık F1TV gerektirir; bu başlangıçta yalnız takvim kullanılır.
+Access conditions were checked on 3 November 2026:
 
-Kod ile kaynak verinin lisansları ayrıdır. İndirilen gerçek veri ve önbellek Git'e eklenmez. Kaynak şartları korunmalı; çalışma kişisel öğrenme/portföy içindir.
+- [OpenF1 documentation](https://openf1.org/docs/) — historical data from 2023 onwards, available without authentication.
+- [Jolpica documentation](https://github.com/jolpica/jolpica-f1/blob/main/docs/README.md) — results, driver records, and circuits.
+- [FastF1 authentication](https://github.com/theOehrly/Fast-F1/blob/main/docs/api_reference/accounts_auth.rst) — timing access requires F1TV; this starter uses the calendar only.
+
+Code and source data have separate licensing terms. Downloaded data and caches are excluded from Git. Respect the source terms; this project is intended for personal learning and portfolio development.

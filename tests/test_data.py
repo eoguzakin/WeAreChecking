@@ -24,7 +24,7 @@ def test_weekend_format_comes_from_schedule(names, expected):
 
 
 def test_missing_column_explains_actual_schema():
-    with pytest.raises(DataContractError, match="Mevcut kolonlar"):
+    with pytest.raises(DataContractError, match="Available columns"):
         require_columns(pd.DataFrame({"wrong": [1]}), ["DriverNumber"], "laps")
 
 
@@ -36,7 +36,7 @@ def test_snapshot_hash_detects_edit(tmp_path):
     (tmp_path / "manifest.json").write_text(json.dumps(metadata))
     open_snapshot(tmp_path)
     table.write_bytes(b"edited")
-    with pytest.raises(DataContractError, match="değişmiş"):
+    with pytest.raises(DataContractError, match="changed"):
         open_snapshot(tmp_path)
 
 
@@ -53,12 +53,12 @@ def test_fp_participant_is_not_assigned_race_identity():
 
 
 def test_pending_exercise_is_not_a_pass():
-    assert check_lap_counts(None, None).startswith("BEKLİYOR")
-    assert check_baseline(None, None).startswith("BEKLİYOR")
+    assert check_lap_counts(None, None).startswith("PENDING")
+    assert check_baseline(None, None).startswith("PENDING")
 
 
 def test_lap_feedback_ignores_duplicate_invalid_laps():
     laps = pd.DataFrame({"DriverNumber": ["1"] * 5 + ["2"],
                          "LapNumber": [1, 1, 2, 0, None, 1]})
     answer = pd.DataFrame({"driver_number": ["1", "2"], "lap_count": [2, 1]})
-    assert check_lap_counts(answer, laps).startswith("TAMAM")
+    assert check_lap_counts(answer, laps).startswith("PASSED")

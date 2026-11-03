@@ -12,7 +12,7 @@ PYTHON = ENV / ("Scripts/python.exe" if sys.platform == "win32" else "bin/python
 
 def main():
     if not (3, 12) <= sys.version_info[:2] < (3, 15):
-        raise SystemExit("Python 3.12, 3.13 veya 3.14 gerekiyor.")
+        raise SystemExit("Python 3.12, 3.13, or 3.14 is required.")
     if not PYTHON.exists():
         venv.EnvBuilder(with_pip=True).create(ENV)
     lock = ROOT / ("requirements-windows-py313.lock" if sys.platform == "win32"
@@ -34,7 +34,7 @@ def main():
                     "--name", "wearechecking", "--display-name", "WeAreChecking (.venv)"],
                    cwd=ROOT, check=True, env=kernel_env)
     subprocess.run([str(PYTHON), "-m", "wearechecking", "doctor"], cwd=ROOT, check=True)
-    print("Hazır. VS Code: Select Kernel > Python Environments > .venv")
+    print("Ready. In VS Code: Select Kernel > Python Environments > .venv")
 
 
 if __name__ == "__main__":
