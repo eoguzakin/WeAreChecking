@@ -33,3 +33,11 @@ The initial trained model does not beat the qualifying-order baseline on held-ou
 - CI configuration is included. Local checks are reported separately from remote CI.
 
 See ROADMAP.md for the next milestones.
+
+## Publication review — 5 November 2026
+
+The initial v0.1 history through 6f54445 was checked for embedded credentials, personal email addresses and absolute user paths: three commits and 91 reachable file versions, with no matches. Raw downloads, environments and trained models remain excluded from Git. Commit email metadata uses GitHub noreply addresses.
+
+A dependency audit found MessagePack advisories [GHSA-6v7p-g79w-8964](https://github.com/advisories/GHSA-6v7p-g79w-8964) and [GHSA-j586-36cw-2gc2](https://github.com/advisories/GHSA-j586-36cw-2gc2). The lock now uses signalrcore 1.0.4 and msgpack 1.2.4, with minimum safe versions in pyproject.toml. The repeated pip-audit check covered all 90 locked packages, with zero known vulnerabilities and zero skipped packages. All 37 tests and all three notebooks passed after the update.
+
+This is a dated publication-readiness check. Locally loaded joblib models still need to come from a trusted source, as documented in START_HERE.md.
