@@ -1,28 +1,35 @@
-# Status — 3 November 2026
+# Project status
 
-## Ready
+**First draft complete. Under active development.**
+Last verified: 5 November 2026.
 
-- Local Python 3.13 virtual environment and a Jupyter kernel installed inside the repository.
-- Windows/Python 3.13 dependency lock; pyproject version ranges for other supported environments.
-- Real 2024 Bahrain data: FP1, FP2, FP3, Q, R, with participants, laps, stints, and weather for each session.
-- Q and R classifications, with driver-number/abbreviation checks across sources.
-- The 2024 Austrian sprint schedule was verified through the API; full sprint data was not downloaded for this setup.
-- 21 offline infrastructure tests passed; pip check found no broken requirements in the initial setup.
-- Notebooks 01 and 02 were executed from top to bottom. Executed copies and HTML previews are under `reports/executed/`. Git stores notebooks without outputs.
-- The notebook HTML previews were inspected in a browser.
-- GitHub CI configuration is ready but has not run in a remote repository.
-- English guides, notebook explanations, learner feedback, and runtime messages.
+## Delivered
 
-## We will complete these together
+- All required first-draft functions implemented; no learner TODO blocks.
+- Real 2024 Bahrain ingestion, saved baseline and evaluation.
+- Real 2022–2025 history ingestion and chronological race-model benchmark.
+- Remaining-session forecasting with immutable JSON/HTML versions.
+- Reviewed substitutions, withdrawals, injury annotations and scoped disqualification handling.
+- English documentation, three completed notebooks and offline regression tests.
 
-- [ ] Milestone 1: interpret the tables, implement student.lap_counts, and pass its check.
-- [ ] Milestone 2: implement student.qualifying_baseline, save the prediction, and compare it with actual results.
-- [ ] Complete the decision note using your own results.
+The initial trained model does not beat the qualifying-order baseline on held-out position MAE. See MODEL_CARD.md for the exact result and exclusions.
 
-Executing the notebooks without errors does not complete these tasks. No learner prediction or model performance score has been produced yet.
+## Verification
 
-## GitHub
+- 37 local regression tests passed.
+- All three notebooks executed and their HTML exports were visually checked.
+- Real Bahrain pre-weekend and post-qualifying replays completed.
+- Real Austria sprint-qualifying and post-sprint updates completed.
+- A reconstructed 2025 Australian GP prediction was saved using the trained model.
+- Dependency consistency check passed.
 
-The local Git repository is ready. Target: eoguzakin/WeAreChecking, initially private.
-At the end of the initial setup, GitHub sign-in was still pending and the remote repository had not been created.
-After sign-in, the existing commits can be pushed without repeating the setup.
+## Open limits
+
+- All workflows are reconstructed historical demonstrations; no live service.
+- Multi-session weights are heuristic and not backtested.
+- News ingestion is manual; no automatic crawler or unattended refresh.
+- Circuit geometry, tyre degradation, forecast weather and calibrated uncertainty remain planned.
+- Driver/event behavior has synthetic regression coverage; it is not evidence of performance on rare real-world incidents.
+- CI configuration is included. Local checks are reported separately from remote CI.
+
+See ROADMAP.md for the next milestones.

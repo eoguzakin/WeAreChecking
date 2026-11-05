@@ -1,3 +1,11 @@
-# Outputs
+# Generated reports
 
-Saving a prediction creates a new folder containing a CSV and JSON metadata. Evaluation reads that saved record. The notebooks wait for the learner exercises to be completed before producing a prediction. Executed notebooks and HTML previews also live here. Generated contents of this folder are excluded from Git.
+Local output only; generated runs are excluded from Git.
+
+- predictions/: qualifying baseline inputs, ranks and evaluation.
+- benchmarks/: chronological metrics, predictions and trusted local model artifacts.
+- races/: trained race predictions and frozen features.
+- weekends/: versioned JSON/HTML session forecasts.
+- executed/: executed notebook copies and HTML previews.
+
+The published benchmark summary lives in docs/evaluation/.

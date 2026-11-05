@@ -1,0 +1,152 @@
+{
+  "mode": "reconstructed",
+  "year": 2024,
+  "round": 11,
+  "circuit_id": "red_bull_ring",
+  "available_at": "2024-06-27T00:00:00+00:00",
+  "provenance": "Retrospective roster from this event's Jolpica qualifying. available_at is a replay assumption, not verified historical publication evidence. Do not use this roster to claim a live or point-in-time backtest.",
+  "source_url": "https://api.jolpi.ca/ergast/f1/2024/11/qualifying/",
+  "source_observed_at": "2026-11-05T13:52:44.555985+00:00",
+  "entries": [
+    {
+      "driver_id": "sainz",
+      "driver": "SAI",
+      "team_id": "ferrari",
+      "team": "Ferrari",
+      "driver_number": "55"
+    },
+    {
+      "driver_id": "max_verstappen",
+      "driver": "VER",
+      "team_id": "red_bull",
+      "team": "Red Bull",
+      "driver_number": "1"
+    },
+    {
+      "driver_id": "norris",
+      "driver": "NOR",
+      "team_id": "mclaren",
+      "team": "McLaren",
+      "driver_number": "4"
+    },
+    {
+      "driver_id": "russell",
+      "driver": "RUS",
+      "team_id": "mercedes",
+      "team": "Mercedes",
+      "driver_number": "63"
+    },
+    {
+      "driver_id": "hamilton",
+      "driver": "HAM",
+      "team_id": "mercedes",
+      "team": "Mercedes",
+      "driver_number": "44"
+    },
+    {
+      "driver_id": "leclerc",
+      "driver": "LEC",
+      "team_id": "ferrari",
+      "team": "Ferrari",
+      "driver_number": "16"
+    },
+    {
+      "driver_id": "piastri",
+      "driver": "PIA",
+      "team_id": "mclaren",
+      "team": "McLaren",
+      "driver_number": "81"
+    },
+    {
+      "driver_id": "perez",
+      "driver": "PER",
+      "team_id": "red_bull",
+      "team": "Red Bull",
+      "driver_number": "11"
+    },
+    {
+      "driver_id": "hulkenberg",
+      "driver": "HUL",
+      "team_id": "haas",
+      "team": "Haas F1 Team",
+      "driver_number": "27"
+    },
+    {
+      "driver_id": "ocon",
+      "driver": "OCO",
+      "team_id": "alpine",
+      "team": "Alpine F1 Team",
+      "driver_number": "31"
+    },
+    {
+      "driver_id": "ricciardo",
+      "driver": "RIC",
+      "team_id": "rb",
+      "team": "RB F1 Team",
+      "driver_number": "3"
+    },
+    {
+      "driver_id": "kevin_magnussen",
+      "driver": "MAG",
+      "team_id": "haas",
+      "team": "Haas F1 Team",
+      "driver_number": "20"
+    },
+    {
+      "driver_id": "gasly",
+      "driver": "GAS",
+      "team_id": "alpine",
+      "team": "Alpine F1 Team",
+      "driver_number": "10"
+    },
+    {
+      "driver_id": "tsunoda",
+      "driver": "TSU",
+      "team_id": "rb",
+      "team": "RB F1 Team",
+      "driver_number": "22"
+    },
+    {
+      "driver_id": "alonso",
+      "driver": "ALO",
+      "team_id": "aston_martin",
+      "team": "Aston Martin",
+      "driver_number": "14"
+    },
+    {
+      "driver_id": "albon",
+      "driver": "ALB",
+      "team_id": "williams",
+      "team": "Williams",
+      "driver_number": "23"
+    },
+    {
+      "driver_id": "stroll",
+      "driver": "STR",
+      "team_id": "aston_martin",
+      "team": "Aston Martin",
+      "driver_number": "18"
+    },
+    {
+      "driver_id": "bottas",
+      "driver": "BOT",
+      "team_id": "sauber",
+      "team": "Sauber",
+      "driver_number": "77"
+    },
+    {
+      "driver_id": "sargeant",
+      "driver": "SAR",
+      "team_id": "williams",
+      "team": "Williams",
+      "driver_number": "2"
+    },
+    {
+      "driver_id": "zhou",
+      "driver": "ZHO",
+      "team_id": "sauber",
+      "team": "Sauber",
+      "driver_number": "24"
+    }
+  ]
+}

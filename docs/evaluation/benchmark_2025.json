@@ -1,0 +1,105 @@
+{
+  "status": "first draft; under active development",
+  "mode": "reconstructed",
+  "created_at": "2026-11-05T14:14:22.716201+00:00",
+  "source": "Jolpica",
+  "source_observed_at": "2026-11-05T13:52:44.555985+00:00",
+  "history_manifest_sha256": "60290e003d30a947a616a83ca29b6bc5c8593013b9c248e1686707e0ba98fa53",
+  "splits": {
+    "train_through": 2023,
+    "validation": 2024,
+    "test": 2025,
+    "train_events": 43,
+    "valid_events": 21
+  },
+  "selected_model": "ridge_100",
+  "validation": {
+    "ridge_10": {
+      "position_mae": 3.1601503759398497,
+      "spearman": 0.7181525241675617,
+      "top3_overlap": 0.523809523809524,
+      "events": 21,
+      "driver_rows": 419
+    },
+    "ridge_100": {
+      "position_mae": 2.939849624060151,
+      "spearman": 0.7389664637784938,
+      "top3_overlap": 0.6349206349206349,
+      "events": 21,
+      "driver_rows": 419
+    },
+    "hist_gradient_boosting": {
+      "position_mae": 3.092731829573934,
+      "spearman": 0.7206349206349206,
+      "top3_overlap": 0.5873015873015873,
+      "events": 21,
+      "driver_rows": 419
+    }
+  },
+  "validation_qualifying_baseline": {
+    "position_mae": 2.847869674185464,
+    "spearman": 0.7478338703902614,
+    "top3_overlap": 0.603174603174603,
+    "events": 21,
+    "driver_rows": 419
+  },
+  "test_model": {
+    "position_mae": 3.338095238095238,
+    "spearman": 0.6651629072681704,
+    "top3_overlap": 0.7619047619047618,
+    "events": 21,
+    "driver_rows": 420
+  },
+  "test_qualifying_baseline": {
+    "position_mae": 3.3238095238095235,
+    "spearman": 0.6575725026852846,
+    "top3_overlap": 0.7619047619047619,
+    "events": 21,
+    "driver_rows": 420
+  },
+  "paired_mae_difference_model_minus_baseline": 0.014285714285714287,
+  "paired_bootstrap_95_interval": [
+    -0.17154761904761906,
+    0.21904761904761907
+  ],
+  "excluded_events": [
+    {
+      "event_id": "2023-10",
+      "reason": "incomplete qualifying classification"
+    },
+    {
+      "event_id": "2024-08",
+      "reason": "incomplete qualifying classification"
+    },
+    {
+      "event_id": "2024-15",
+      "reason": "incomplete qualifying classification"
+    },
+    {
+      "event_id": "2024-17",
+      "reason": "incomplete qualifying classification"
+    },
+    {
+      "event_id": "2025-07",
+      "reason": "incomplete qualifying classification"
+    },
+    {
+      "event_id": "2025-09",
+      "reason": "Q/R roster mismatch"
+    },
+    {
+      "event_id": "2025-21",
+      "reason": "Q/R roster mismatch"
+    }
+  ],
+  "limitations": [
+    "Historical classifications downloaded now may include later corrections.",
+    "Final-classification target includes retirements and disqualifications.",
+    "Q/R roster mismatches are excluded, not silently repaired.",
+    "Model frozen before test season; rolling form updates after each previous race.",
+    "Circuit identity and past circuit performance are used; geometry and degradation are not.",
+    "No weather forecasts, news or grid penalties in the trained benchmark.",
+    "Event bootstrap interval is descriptive; successive races are not independent.",
+    "A learned score is not a calibrated finishing-position probability."
+  ]
+}

@@ -5,9 +5,9 @@ build-backend = "setuptools.build_meta"
 [project]
 name = "wearechecking"
 version = "0.1.0"
-description = "Learning to forecast Formula 1 weekends without future-data leakage"
+description = "Reproducible F1 weekend forecasting — first draft under active development"
 requires-python = ">=3.12,<3.15"
-dependencies = ["fastf1==3.9.1", "pandas>=2.2,<3", "pyarrow>=18,<24", "requests>=2.32,<3", "requests-cache>=1.2,<2"]
+dependencies = ["fastf1==3.9.1", "pandas>=2.2,<3", "pyarrow>=18,<24", "requests>=2.32,<3", "requests-cache>=1.2,<2", "scikit-learn>=1.6,<2", "joblib>=1.4,<2"]
 
 [project.optional-dependencies]
 dev = ["pytest>=8,<10", "nbformat>=5.10,<6", "nbclient>=0.10,<1", "nbconvert>=7.16,<8", "ipykernel>=6.29,<8"]

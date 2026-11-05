@@ -1,4 +1,4 @@
-"""Validate structure, or execute exercises without solving them."""
+"""Validate and execute the completed walkthrough notebooks."""
 from pathlib import Path
 import argparse
 import os
@@ -33,7 +33,7 @@ def main():
             html, _ = HTMLExporter(template_name="lab").from_notebook_node(notebook)
             (output / source.with_suffix(".html").name).write_text(html, encoding="utf-8")
         print(f"OK: {source.name} ({'structure' if args.structure_only else 'executed'})")
-    print("Pending student exercises remain pending; this is not milestone completion.")
+    print("Completed walkthrough notebooks validated.")
 
 if __name__ == "__main__":
     main()

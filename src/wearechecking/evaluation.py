@@ -18,9 +18,11 @@ def save_prediction(prediction, inputs, root=None):
     folder.mkdir(parents=True, exist_ok=False)
     table = prediction[["driver_id", "predicted_position"]].sort_values("predicted_position")
     table.to_csv(folder / "prediction.csv", index=False)
+    inputs.frame.to_csv(folder / "inputs.csv", index=False)
     meta = dict(inputs.metadata, created_at=datetime.now(timezone.utc).isoformat(),
                 prediction_sha256=sha256((folder / "prediction.csv").read_bytes()).hexdigest(),
-                model="student_qualifying_baseline_v0")
+                model="qualifying_order_v1",
+                inputs_sha256=sha256((folder / "inputs.csv").read_bytes()).hexdigest())
     (folder / "metadata.json").write_text(json.dumps(meta, indent=2, ensure_ascii=False), encoding="utf-8")
     return folder
 
@@ -32,6 +34,8 @@ def evaluate_saved(folder, snapshot):
         raise DataContractError("The prediction was created from a different snapshot.")
     if sha256((folder / "prediction.csv").read_bytes()).hexdigest() != meta["prediction_sha256"]:
         raise DataContractError("The saved prediction was modified; create a new prediction record.")
+    if meta.get("inputs_sha256") and sha256((folder / "inputs.csv").read_bytes()).hexdigest() != meta["inputs_sha256"]:
+        raise DataContractError("The saved inputs were modified.")
     prediction = pd.read_csv(folder / "prediction.csv")
     results = snapshot.table("R", "results")
     require_columns(results, ["DriverId", "Position", "Status"], "Race results")

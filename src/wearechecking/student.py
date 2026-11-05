@@ -1,24 +1,23 @@
-"""Your coding workspace. We will complete these two exercises together."""
+"""Completed reference implementations retained for the learning notebooks."""
+import pandas as pd
+from .contracts import require_columns, validate_ranking
 
 
 def lap_counts(laps):
-    """Exercise 1.
-
-    Input: a lap table containing DriverNumber and LapNumber.
-    Output: driver_number and lap_count columns, with one row per driver.
-    Count duplicate (DriverNumber, LapNumber) records only once.
-    Exclude zero or missing lap numbers. Keep driver numbers as strings.
-    The notebook contains hints. Return None until we implement the exercise.
-    """
-    return None  # TODO 1: we will write this together.
+    """Count distinct positive lap numbers; missing lap times are still laps."""
+    require_columns(laps, ["DriverNumber", "LapNumber"], "Laps")
+    frame = laps[["DriverNumber", "LapNumber"]].copy()
+    frame["LapNumber"] = pd.to_numeric(frame.LapNumber, errors="coerce")
+    frame = frame.loc[frame.DriverNumber.notna() & (frame.LapNumber > 0)]
+    frame["DriverNumber"] = frame.DriverNumber.astype(str)
+    return (frame.drop_duplicates().groupby("DriverNumber").size()
+            .rename("lap_count").rename_axis("driver_number").reset_index())
 
 
 def qualifying_baseline(features):
-    """Exercise 2.
-
-    Input: driver_id, driver, team, qualifying_position.
-    Output: driver_id and predicted_position, ranked 1..N, one row per driver.
-    First hypothesis: use qualifying order as a starting prediction for race order.
-    Do not mutate the input table. Actual race results never enter this function.
-    """
-    return None  # TODO 2: we will write this together.
+    """Preserve qualifying order as an explicit race benchmark."""
+    require_columns(features, ["driver_id", "qualifying_position"], "Qualifying inputs")
+    prediction = features[["driver_id", "qualifying_position"]].rename(
+        columns={"qualifying_position": "predicted_position"}).copy()
+    validate_ranking(prediction, features.driver_id)
+    return prediction.sort_values("predicted_position").reset_index(drop=True)

@@ -1,59 +1,94 @@
-# WeAreChecking 🏁
+# WeAreChecking
 
-A Python project for learning how to forecast Formula 1 weekends, one step at a time.
+**First draft · Under active development · v0.1.0**
 
-**Start here:** [START_HERE.md](START_HERE.md) → [01 · Weekend data](notebooks/01_weekend_data.ipynb) → [02 · First prediction](notebooks/02_first_prediction.ipynb).
+F1 weekend forecasting with traceable data, sequential session updates and reproducible evaluation. This is a working research prototype. Its predictions are experimental; the first trained model has **not beaten qualifying order on held-out position error**.
 
-## Current scope
+## What works today
 
-- An isolated Python environment, data download command, cache, and versioned snapshots.
-- OpenF1: session participants, laps, tyre stints, and observed weather.
-- Jolpica: qualifying, sprint, and race classifications, plus permanent driver IDs.
-- FastF1: the calendar only; its timing download API is not used.
-- Separate model inputs and actual results, a UTC forecast cutoff, prediction records, and evaluation.
-- Two guided notebooks, two learner exercises, and offline infrastructure tests.
+| Component | First-draft behavior |
+| --- | --- |
+| Data ingestion | FastF1 calendar, OpenF1 laps/participants/weather/stints, Jolpica classifications and paginated season history |
+| Reproducibility | Immutable snapshots, raw responses, checksums, source URLs and observation timestamps |
+| Weekend forecasts | Rankings for remaining FP, qualifying, sprint qualifying, sprint and Grand Prix sessions |
+| Session updates | Rerun with a later cutoff; completed sessions update remaining predictions and produce a new saved report |
+| Driver events | Reviewed, timestamped substitutions and withdrawals; injury annotations; session-specific disqualification filtering |
+| Race model | Ridge and gradient boosting candidates using qualifying, driver, team and circuit history |
+| Evaluation | Chronological training/validation/test seasons, baseline comparisons, exclusions and per-event results |
+| Learning | Three completed, executable English notebooks |
+| Output | CLI tables, CSV/JSON artifacts and a local HTML weekend report |
 
-**Still to build:** the learner exercises, a trained ML model, predictions for every session, circuit performance features, news/injury/penalty/substitution handling, live updates, and a user interface. See the [roadmap](docs/ROADMAP.md).
+The weekend engine currently uses **fixed heuristic weights**. The trained race benchmark is a separate experimental path. There is no live service, automated news crawler, calibrated probability model, weather forecast integration or session-specific trained model yet.
 
-The first benchmark uses qualifying order to predict race order. It gives us a starting point for learning and comparing future models.
+## Quick start — Windows / Python 3.13
 
-## Setup and checks
-
-Python 3.12–3.14 is supported; this machine uses 3.13. Run these commands in PowerShell from the project root:
-
-```powershell
-py -3.13 bootstrap.py
-.\.venv\Scripts\python.exe -m wearechecking doctor
-.\.venv\Scripts\python.exe -m pytest
-```
-
-Open **this folder** in VS Code. Select **WeAreChecking (.venv)** or this folder's `.venv\Scripts\python.exe` as the notebook kernel. Environment activation is optional.
+From the repository root:
 
 ```powershell
-.\.venv\Scripts\python.exe -m wearechecking fetch --year 2024 --round 1
-.\.venv\Scripts\python.exe -m wearechecking inspect --year 2024 --round 1
+python bootstrap.py
+$wacPython = ".\.venv\Scripts\python.exe"
+& $wacPython -m wearechecking doctor
+& $wacPython -m wearechecking demo --year 2024 --round 1
 ```
 
-The default example is the 2024 Bahrain Grand Prix. The fetch command downloads every session on the weekend schedule. The first download requires internet access; the notebooks read the saved snapshot. Each new download creates a separate snapshot. Detailed car telemetry is outside this initial download.
+The demo downloads the historical Bahrain weekend if necessary, saves a qualifying-order prediction, then evaluates it. It needs internet access on the first run. No API key or paid timing-data account is required for this historical workflow.
 
-## How we will learn
+On macOS/Linux, create a Python 3.13 environment, install with `python -m pip install -e ".[dev]"`, and use `python -m wearechecking`. See [START_HERE.md](START_HERE.md) for kernel setup and commands.
 
-We will use **predict what will happen → write a small piece of code → run a check → explain the result**. Your workspace is `src/wearechecking/student.py`. The functions initially return `None`, which the notebooks display as **PENDING**. This means an exercise is waiting for us to complete it. Passing the infrastructure tests does not complete the exercises.
+## Train and benchmark
 
-We will use English for explanations, documentation, code comments, and feedback.
+```powershell
+& $wacPython -m wearechecking history --start-year 2022 --end-year 2025
+& $wacPython -m wearechecking benchmark
+```
 
-## Honest evaluation
+The protocol is fixed: train on 2022–2023, select on 2024, refit through 2024, and test on 2025. Previous completed test-season races may update historical form, while the model stays frozen.
 
-Historical data is downloaded today and may contain later classification corrections. The first experiment is therefore explicitly labelled **reconstructed**. It does not establish what information was available at a historical forecast time.
+### Initial held-out result
 
-For the first exercise, qualifying participants are treated as provisional race entries. Grid penalties, DNS, and driver substitutions are not modelled yet. Evaluation stops if the participant lists differ. One race's error is not evidence of general performance. Official positions are preserved for classified drivers who did not finish; separate DNS/DSQ handling remains future work.
+Across **21 eligible races / 420 driver rows** in 2025:
 
-## Sources
+| Method | Position MAE ↓ | Spearman ↑ | Top-three overlap ↑ |
+| --- | ---: | ---: | ---: |
+| Qualifying-order baseline | 3.324 | 0.658 | 0.762 |
+| Selected trained model: Ridge, alpha 100 | 3.338 | 0.665 | 0.762 |
 
-Access conditions were checked on 3 November 2026:
+The model's paired MAE difference is +0.014 positions, with a descriptive event-bootstrap 95% interval of −0.172 to +0.219. This does not establish an improvement. Seven events across the downloaded seasons were excluded for incomplete qualifying classifications or Q/R roster mismatches. [Full model card](docs/MODEL_CARD.md) · [Machine-readable result](docs/evaluation/benchmark_2025.json).
 
-- [OpenF1 documentation](https://openf1.org/docs/) — historical data from 2023 onwards, available without authentication.
-- [Jolpica documentation](https://github.com/jolpica/jolpica-f1/blob/main/docs/README.md) — results, driver records, and circuits.
-- [FastF1 authentication](https://github.com/theOehrly/Fast-F1/blob/main/docs/api_reference/accounts_auth.rst) — timing access requires F1TV; this starter uses the calendar only.
+## Update a weekend
 
-Code and source data have separate licensing terms. Downloaded data and caches are excluded from Git. Respect the source terms; this project is intended for personal learning and portfolio development.
+After downloading history and running the demo:
+
+```powershell
+& $wacPython -m wearechecking forecast --year 2024 --round 1 --entries examples/2024_bahrain_entries.json --events examples/events.json --cutoff 2024-02-29T10:00:00Z
+& $wacPython -m wearechecking forecast --year 2024 --round 1 --entries examples/2024_bahrain_entries.json --events examples/events.json --cutoff 2024-03-01T18:00:00Z
+```
+
+The first run forecasts all five scheduled sessions from historical form. The second has practice and qualifying evidence and forecasts only the Grand Prix. Each run saves a separate `forecast.html` and `forecast.json` under `reports/weekends/`.
+
+The example roster is **reconstructed from later qualifying data**. Its availability date is an explicit replay assumption, not proof of a genuinely historical forecast. All current workflows are labelled reconstructed.
+
+For a sprint weekend, download that weekend and supply its own entry file. The schedule determines session order; the engine does not assume every weekend follows the same format. See [event handling](docs/EVENTS.md).
+
+## Project map
+
+- [START_HERE.md](START_HERE.md): installation and the complete workflow.
+- [notebooks/](notebooks/): data exploration, saved baseline, chronological modeling.
+- [src/wearechecking/](src/wearechecking/): ingestion, contracts, features, models, session updates and CLI.
+- [docs/DATA_CONTRACT.md](docs/DATA_CONTRACT.md): temporal and identity boundaries.
+- [docs/DECISION_NOTE.md](docs/DECISION_NOTE.md): what the initial results justify.
+- [docs/ROADMAP.md](docs/ROADMAP.md): next development milestones.
+- [docs/STATUS.md](docs/STATUS.md): verified behavior and open limits.
+
+## Validation
+
+```powershell
+& $wacPython -m pytest
+& $wacPython scripts/validate_notebooks.py
+```
+
+Notebook execution requires the Bahrain snapshot and 2022–2025 history. CI runs offline regression tests and notebook structure checks. Data, environments, caches and trained model binaries are excluded from Git.
+
+Sources: [OpenF1](https://openf1.org/docs) · [Jolpica](https://github.com/jolpica/jolpica-f1/blob/main/docs/README.md) · [FastF1](https://docs.fastf1.dev/) · [scikit-learn](https://scikit-learn.org/stable/).
+
+This independent project is not affiliated with Formula 1, the FIA or any team. Source data remain subject to their providers' terms.
